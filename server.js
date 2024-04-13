@@ -6,7 +6,34 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+
+
 app.use(express.static('public')); // Serve static files from the 'public' directory
+
+io.on('connection', (socket) => {
+    socket.on('send-text', (text) => {
+        // Store text in the SQLite database
+        db.run(`INSERT INTO texts (text_content) VALUES (?)`, [text], function(err) {
+            if (err) {
+                return console.log(err.message);
+            }
+            console.log(`A row has been inserted with rowid ${this.lastID}`);
+        });
+
+        // Broadcast to other users
+        socket.broadcast.emit('receive-text', text);
+    });
+
+    // Send stored text to the user when they connect
+    db.get("SELECT text_content FROM texts ORDER BY id DESC LIMIT 1", (err, row) => {
+        if (err) {
+            console.error(err.message);
+        } else {
+            socket.emit('load-text', row.text_content);
+        }
+    });
+});
+
 
 io.on('connection', (socket) => {
     console.log('A user connected');

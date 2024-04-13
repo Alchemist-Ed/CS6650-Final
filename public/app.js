@@ -1,10 +1,10 @@
 const socket = io();  // Connect to the server
-
 const editor = document.getElementById('editor');
+
 console.log(editor);  // Check what this outputs
 if (editor) {
     editor.addEventListener('input', function() {
-        // Your code here
+        socket.emit('send-text', editor.value);
     });
 } else {
     console.error('Editor element not found!');
@@ -16,6 +16,11 @@ document.getElementById('editor').addEventListener('input', function() {
     console.log('Emitting text:', text);
     socket.emit('send-text', text);
 });
+
+socket.on('load-text', (text) => {
+    document.getElementById('editor').value = text;
+});
+
 
 socket.on('receive-text', (text) => {
     const editor = document.getElementById('editor');
