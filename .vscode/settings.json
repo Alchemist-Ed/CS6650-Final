@@ -1,3 +1,8 @@
+<<<<<<< HEAD
 {
     "git.ignoreLimitWarning": true
+=======
+{
+    "git.ignoreLimitWarning": true
+>>>>>>> d0ed56b (update heartbeat feature april 15)
 }

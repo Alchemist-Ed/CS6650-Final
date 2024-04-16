@@ -16,7 +16,7 @@ const io = new Server(server, {
 let currentText = ""
 let lastHeartbeat_receive = null;
 
-const otherServerUrl = 'http://192.168.1.68:3000'; // Change this URL to the actual other server's URL
+const otherServerUrl = 'http:localhost:3000'; // Change this URL to the actual other server's URL
 const otherServerSocket = ClientIO(otherServerUrl);
 
 const sqlite3 = require('sqlite3').verbose();
